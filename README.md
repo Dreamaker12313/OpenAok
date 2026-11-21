@@ -1,93 +1,95 @@
+**English** | [简体中文](README.zh-CN.md)
+
 # OpenAokHD
 
-**《帝国时代 II：HD 版》的 Android 原生移植 / 触控增强版，基于 OpenAoK + Thor AoK。**
+**A native Android port of *Age of Empires II: HD Edition*, with touch controls — based on OpenAoK + Thor AoK.**
 
-OpenAokHD 读取玩家自己的 **Age of Empires II: HD Edition（2013）** 数据，在 Android arm64 上运行，
-支持 31 个文明、原版 + 征服者 + HD 三个资料片的战役，并为 AYN Thor 这类双屏掌机做了触控命令面板。
+OpenAokHD runs from the player's own **Age of Empires II: HD Edition (2013)** data on Android arm64.
+It supports 31 civilizations, the original, The Conquerors and the HD expansions, and adds a touch command deck for dual-screen handhelds such as the AYN Thor.
 
-> 本项目不包含任何游戏数据。你需要自己拥有正版《帝国时代 II：HD 版》。
-> 与 Microsoft / Forgotten Empires 无关联。
+> This repository contains **no game data**. You need your own copy of *Age of Empires II: HD Edition*.
+> Not affiliated with, endorsed by or sponsored by Microsoft / Forgotten Empires.
 
 ---
 
-## 当前功能
+## Features
 
-### 游戏内容
+### Game content
 
-- **31 个文明**（含 HD DLC 文明，Gaia 另计）
-- **国王时代 / 征服者 / 非洲王国 / 蛮王崛起 / 失落帝国** 战役入口
-- DLC 战役从 HD 的 `.cpx2` / `.aoe2campaign` 转换成引擎可读的 `.cpx`
-- 征服者与 HD 的随机地图、真实世界地图
-- 中文界面、中文单位/科技/文明名
-- 中文文本按字换行，白色文字 + 黑色八方向描边
+- **31 civilizations** (including the HD DLC civilizations; Gaia is counted separately)
+- Campaign entries for **The Age of Kings / The Conquerors / African Kingdoms / Rise of the Rajas / The Forgotten**
+- HD DLC campaigns converted from `.cpx2` / `.aoe2campaign` into the engine's `.cpx`
+- The Conquerors and HD random maps, plus real-world maps
+- Chinese UI, unit, technology and civilization names
+- Chinese line breaking by character, white text with an eight-direction black outline
 
-### HD 界面
+### HD interface
 
-- 解码 HD 的 **32 位 SLP**（`main_32.slp`、`xcam*_32.slp`、`scr*_32.slp` 等）
-- 主菜单、战役书、战役地图、自定义战役页使用 HD 背景
-- HD 背景作为独立图层绘制，原版按钮/招牌帧保留，避免换图后按钮失效
-- 战役地图使用各 DLC 自己的 `*_campaign_render.jpg` / `maps/*.jpg`
-- 失落帝国没有官方静态模块图，使用官方 `custom-campaign-fallback` 图
+- Decodes the HD **32-bit SLP** files (`main_32.slp`, `xcam*_32.slp`, `scr*_32.slp`, …)
+- HD backgrounds for the main menu, campaign book, campaign maps and custom campaign pages
+- HD backgrounds are drawn as a separate layer while the original button/sign frames are kept, so replacing art does not break buttons
+- Campaign maps use each DLC's own `*_campaign_render.jpg` / `maps/*.jpg`
+- *The Forgotten* has no official static module art; the official `custom-campaign-fallback` image is used instead
 
-### Android / 触控
+### Android / touch
 
 - arm64 Android 29+
-- 双屏：上屏地图，下屏触控命令面板
-- 单屏设备自动使用原版布局
-- 数据导入：选择 `OpenAoK-data` 文件夹，校验 manifest 后复制到应用内部
-- 应用名 **OpenAokHD**，国王头像圆角图标
+- Dual screen: map on the top screen, touch command deck on the bottom screen
+- Single-screen devices fall back to the original layout
+- Data import: pick the `OpenAoK-data` folder; the app verifies the manifest and copies it into private storage
+- App name **OpenAokHD**, king-portrait rounded icon
 
 ---
 
-## 数据包
+## Data pack
 
-仓库**不包含**游戏数据。请在自己的电脑上生成：
+The repository does **not** include game data. Generate it on your PC:
 
 ```sh
 python3 -m pip install pillow numpy
 python3 android/package.py --hd "/path/to/Age2HD"
 ```
 
-输出：
+Output:
 
 ```text
 android/build/OpenAoK-data/
 ```
 
-然后：
+Then:
 
-1. 把 `OpenAoK-data` 复制到手机（SD 卡或内部存储）；
-2. 启动 OpenAokHD；
-3. 选择 `OpenAoK-data` 文件夹；
-4. 等待校验/复制完成，进入游戏。
+1. Copy `OpenAoK-data` to the phone (SD card or internal storage).
+2. Start OpenAokHD.
+3. Choose the `OpenAoK-data` folder.
+4. Wait for verification/copying, then play.
 
-数据包当前约 **1 GB**，包含：
+The pack is about **1 GB** and contains:
 
-- HD 图形/声音/地形/语言
-- DLC 文明与单位数据
-- 15 个 HD 战役（非洲 4、蛮王 4、失落 7）
-- HD 界面背景与战役插画
+- HD graphics, sounds, terrain and language files
+- DLC civilizations and unit data
+- 15 HD campaigns (4 African, 4 Rajas, 7 Forgotten)
+- HD interface backgrounds and campaign illustrations
 
 ---
 
-## 构建
+## Building
 
 ### Android
 
-需要：
+Requirements:
 
-- Android SDK + NDK（arm64）
+- Android SDK + NDK (arm64)
 - CMake / Ninja
-- 项目自带的 `android/` Gradle 工程
+- The included `android/` Gradle project
 
 ```sh
 cd android
 ./gradlew assembleDebug
 ```
 
-APK 输出在 `android/app/build/outputs/apk/debug/`。
+The APK is written to `android/app/build/outputs/apk/debug/`.
 
-> 发布版请使用自己的签名；不要提交 `local.properties`、`*.jks`、`build/`。
+> Sign release builds with your own key. Never commit `local.properties`, `*.jks` or `build/` output.
 
 ### Desktop
 
@@ -96,55 +98,55 @@ APK 输出在 `android/app/build/outputs/apk/debug/`。
 cd build && ./OpenAoK
 ```
 
-桌面构建主要用于调试引擎逻辑；Android 触控面板只在 Android 构建启用。
+The desktop build is mainly for debugging engine logic; the Android touch deck is enabled only in Android builds.
 
 ---
 
-## 源码结构
+## Source layout
 
 ```text
 src/
-  ai/            电脑玩家
-  core/          游戏规则、地图、输入
-  ecs/           单位、建筑、战斗、触发器
-  hal/           SDL、窗口、SLP、音频、网络
-  rendering/     地图/单位/UI/文字
-  screens/       主菜单、战役、设置、对话框
-  scenario/      场景与战役读写
-  save/          存档
-tools/data/      HD 数据转换、SLP/DRS/战役转换
-android/         Android 工程与数据打包
-third_party/     SDL2、genieutils、FreeType 等
+  ai/            computer players
+  core/          rules, maps, input
+  ecs/           units, buildings, combat, triggers
+  hal/           SDL, window, SLP, audio, networking
+  rendering/     map, units, UI, text
+  screens/       main menu, campaigns, setup, dialogs
+  scenario/      scenario and campaign I/O
+  save/          saved games
+tools/data/      HD data conversion, SLP/DRS/campaign tools
+android/         Android project and data packaging
+third_party/     SDL2, genieutils, FreeType, etc.
 ```
 
-关键 HD 转换脚本：
+HD conversion tools:
 
-- `tools/data/convert_hd.py`：HD 数据布局转换
-- `tools/data/extract_interface_data.py`：界面/战役资源索引
-- `tools/data/convert_dlc_campaigns.py`：HD DLC 战役转换
-- `tools/data/slp.py`：8 位 SLP 读写
-- `tools/data/encode_rect_slp.py`：RGB 图转 8 位 SLP
-- `tools/data/slp32.cpp`：32 位 HD SLP 解码为 PPM
-
----
-
-## 已知限制
-
-- **DLC 战役 AI info 仍未转换**：触发器/地图/单位正常，电脑 AI 可能偏安静。
-- **HD 界面布局仍是 800×600 逻辑坐标**：HD 背景 1366×768 会缩放到 800×600，按钮位置与 HD 图并非逐像素对齐。
-- **失落帝国**没有官方静态模块背景/图标，当前使用 fallback 图。
-- **战役开场**是分页文本 + 插画，尚未接入官方 `.mm` 多段旁白/音频。
-- HD 单位/建筑素材仍是 2013 HD 的 8 位 SLP；不是决定版（DE）的 32 位单位。
-- 数据包约 1 GB，首次导入较慢。
+- `tools/data/convert_hd.py` — HD data layout conversion
+- `tools/data/extract_interface_data.py` — interface/campaign resource index
+- `tools/data/convert_dlc_campaigns.py` — HD DLC campaign conversion
+- `tools/data/slp.py` — 8-bit SLP reader/writer
+- `tools/data/encode_rect_slp.py` — RGB image to 8-bit SLP
+- `tools/data/slp32.cpp` — 32-bit HD SLP to PPM
 
 ---
 
-## 许可与致谢
+## Known limitations
 
-- 引擎基于 [OpenAoK](https://github.com/Zaydme/openaok)（C++20 / SDL2）
-- Thor 双屏/触控改造基于 **Thor AoK**
-- 32 位 SLP 解码使用 [genieutils](https://github.com/Tapsa/genieutils)
-- SLP/DRS 格式参考 [openage](https://github.com/SFTtech/openage)
-- 《帝国时代 II》版权归 Microsoft / Forgotten Empires 所有
+- **DLC campaign AI info is not converted yet**: triggers, maps and units work, but the computer player may be passive.
+- **HD layout still uses 800×600 logical coordinates**: 1366×768 HD backgrounds are scaled to 800×600, so buttons are not pixel-aligned to the HD art.
+- ***The Forgotten*** has no official static module background/icons; the fallback image is used.
+- **Campaign intros** are paged text + illustrations; the official multi-part `.mm` narration/audio is not wired up yet.
+- HD units/buildings are still the 2013 HD 8-bit SLPs, not the 32-bit Definitive Edition assets.
+- The data pack is about 1 GB, so the first import is slow.
 
-代码许可证见 `LICENSE`；第三方组件见 `THIRD_PARTY_NOTICES.md`。
+---
+
+## License and credits
+
+- Engine based on [OpenAoK](https://github.com/Zaydme/openaok) (C++20 / SDL2)
+- Thor dual-screen/touch work based on **Thor AoK**
+- 32-bit SLP decoding uses [genieutils](https://github.com/Tapsa/genieutils)
+- SLP/DRS format references [openage](https://github.com/SFTtech/openage)
+- *Age of Empires II* is copyright Microsoft / Forgotten Empires
+
+See `LICENSE` for the code license and `THIRD_PARTY_NOTICES.md` for third-party components.
