@@ -1,195 +1,150 @@
-<p align="center">
-  <img src="docs/public/images/logo.png" width="680" alt="OpenAoK">
-</p>
+# OpenAokHD
 
-<p align="center">
-  <b>A free, open-source engine for Age of Empires II: The Age of Kings, on your desktop and in your pocket.</b>
-</p>
+**《帝国时代 II：HD 版》的 Android 原生移植 / 触控增强版，基于 OpenAoK + Thor AoK。**
 
-<p align="center">
-  <a href="https://zaydme.github.io/openaok/"><b>Documentation</b></a> ·
-  <a href="https://zaydme.github.io/openaok/guide/"><b>Getting started</b></a> ·
-  <a href="https://github.com/Zaydme/openaok/releases"><b>Download</b></a>
-</p>
+OpenAokHD 读取玩家自己的 **Age of Empires II: HD Edition（2013）** 数据，在 Android arm64 上运行，
+支持 31 个文明、原版 + 征服者 + HD 三个资料片的战役，并为 AYN Thor 这类双屏掌机做了触控命令面板。
 
-<p align="center">
-  <img src="docs/public/images/phone-town.png" width="820" alt="OpenAoK running on an Android phone">
-</p>
+> 本项目不包含任何游戏数据。你需要自己拥有正版《帝国时代 II：HD 版》。
+> 与 Microsoft / Forgotten Empires 无关联。
 
-## Why
+---
 
-Playing Age of Empires II on a phone has been a dream of mine since I was a
-kid. Microsoft was never going to make that happen, so I did it myself.
+## 当前功能
 
-OpenAoK is a new engine, written from scratch, that plays the original 1999
-game from your own copy of its CD: the same units, maps, art, sounds, music,
-movies and campaigns, on Windows, macOS, Linux, Android phones, iPhones and
-iPads, and the Nintendo Switch.
+### 游戏内容
 
-## What it is
+- **31 个文明**（含 HD DLC 文明，Gaia 另计）
+- **国王时代 / 征服者 / 非洲王国 / 蛮王崛起 / 失落帝国** 战役入口
+- DLC 战役从 HD 的 `.cpx2` / `.aoe2campaign` 转换成引擎可读的 `.cpx`
+- 征服者与 HD 的随机地图、真实世界地图
+- 中文界面、中文单位/科技/文明名
+- 中文文本按字换行，白色文字 + 黑色八方向描边
 
-- **Written from scratch.** OpenAoK contains no code or data from the original
-  game. It is modern C++20 on SDL 2, data-oriented (EnTT), with a deterministic
-  fixed-point simulation, and it reads the original's data files from your own
-  copy and implements their rules.
-- **The original, faithfully.** Every unit's numbers, every technology,
-  civilisation and map script come from the 1999 data. The interface is drawn
-  from the original art, laid out as the game laid it out, in its own fonts and
-  words.
-- **Your copy, your data.** The repository contains no game files. You copy
-  your CD into a folder, and OpenAoK prepares everything it needs from it.
+### HD 界面
 
-## Screenshots
+- 解码 HD 的 **32 位 SLP**（`main_32.slp`、`xcam*_32.slp`、`scr*_32.slp` 等）
+- 主菜单、战役书、战役地图、自定义战役页使用 HD 背景
+- HD 背景作为独立图层绘制，原版按钮/招牌帧保留，避免换图后按钮失效
+- 战役地图使用各 DLC 自己的 `*_campaign_render.jpg` / `maps/*.jpg`
+- 失落帝国没有官方静态模块图，使用官方 `custom-campaign-fallback` 图
 
-<table>
-  <tr>
-    <td><img src="docs/public/images/economy.jpg" alt="A computer player's town after fifteen minutes"></td>
-    <td><img src="docs/public/images/battle.jpg" alt="Two armies meeting"></td>
-  </tr>
-  <tr>
-    <td><img src="docs/public/images/town.jpg" alt="The bonus scenario"></td>
-    <td><img src="docs/public/images/tech-tree.jpg" alt="The technology tree"></td>
-  </tr>
-  <tr>
-    <td><img src="docs/public/images/campaign.jpg" alt="The William Wallace campaign map"></td>
-    <td><img src="docs/public/images/achievements.jpg" alt="The Achievements timeline"></td>
-  </tr>
-</table>
+### Android / 触控
 
-### On a phone
+- arm64 Android 29+
+- 双屏：上屏地图，下屏触控命令面板
+- 单屏设备自动使用原版布局
+- 数据导入：选择 `OpenAoK-data` 文件夹，校验 manifest 后复制到应用内部
+- 应用名 **OpenAokHD**，国王头像圆角图标
 
-<p align="center">
-  <img src="docs/public/images/phone-build.png" width="49%" alt="Building on a phone, with the larger interface">
-  <img src="docs/public/images/phone-start.png" width="49%" alt="A new random map game on a phone">
-</p>
+---
 
-<p align="center">
-  <img src="docs/public/images/iphone-game.png" width="820" alt="OpenAoK running on an iPhone">
-</p>
+## 数据包
 
-## Controls
+仓库**不包含**游戏数据。请在自己的电脑上生成：
 
-With a mouse and keyboard, the controls are the original's: left-click and
-drag to select, right-click to order, the command panel and its hotkeys for the
-rest. The mouse wheel also zooms the view, which the original could not.
+```sh
+python3 -m pip install pillow numpy
+python3 android/package.py --hd "/path/to/Age2HD"
+```
 
-On a touch screen the game is played as with a mouse, and it is surprisingly
-comfortable: tap to click, hold to right-click, drag one finger to select, two
-fingers to scroll the map, pinch to zoom. This is the same on Android phones,
-iPhones and iPads. The top bar, the panel and the text can each be drawn
-larger, and in widescreen the interface reaches the screen's edges.
+输出：
 
-On the Nintendo Switch the controller plays as a mouse and the game's hotkeys:
+```text
+android/build/OpenAoK-data/
+```
 
-<p align="center">
-  <img src="docs/public/images/switch-controls.svg" width="900" alt="The Switch's controls: the left stick moves the pointer, the right stick scrolls the map and with ZL held zooms, A and B are the left and right mouse buttons, plus is the game menu, minus is chat, and the other buttons are the game's hotkeys">
-</p>
+然后：
 
-Every control, the options and what OpenAoK adds to the original are in the
-guide: [Controls](https://zaydme.github.io/openaok/guide/controls),
-[Options](https://zaydme.github.io/openaok/guide/options),
-[Improvements on the original](https://zaydme.github.io/openaok/guide/improvements).
+1. 把 `OpenAoK-data` 复制到手机（SD 卡或内部存储）；
+2. 启动 OpenAokHD；
+3. 选择 `OpenAoK-data` 文件夹；
+4. 等待校验/复制完成，进入游戏。
 
-## What works
+数据包当前约 **1 GB**，包含：
 
-- **Random maps** from the original map scripts: lands, terrain, elevation,
-  cliffs, shores, objects, at every map size.
-- **The rules**: every unit's numbers, all 426 technologies and their effects,
-  each civilisation's tech tree and bonuses, the four ages.
-- **Economy**: gathering, drop sites, construction, farms, housing, production
-  and research queues, the Market, trade carts and cogs, tribute.
-- **War**: attack and armour classes, missiles, splash damage, formations and
-  stances, garrisons and the town bell, monks and relics, siege, walls and gates.
-- **Water**: docks, fishing, the warship lines, transports landing on any shore.
-- **Computer players** running the original AI scripts in an interpreter of the
-  script language, at every difficulty.
-- **Campaigns and scenarios**, with their triggers, narration and pictures; the
-  scenario editor; saved and recorded games.
-- **Victory** by conquest, Wonder or relics, and a scenario's score, time limit
-  or custom conditions; Regicide and Death Match; diplomacy, allied victory,
-  chat, taunts, flares and the cheat codes.
-- **Presentation**: sprites straight from the original SLPs with player colours
-  and shadows, terrain blending, fog of war, the original interface, sounds,
-  music and the start-up movies.
-- **Multiplayer** in lockstep over TCP, with desync detection: games on the
-  local network found by themselves, others joined by address, and the lobby
-  with its chat and ready checks.
+- HD 图形/声音/地形/语言
+- DLC 文明与单位数据
+- 15 个 HD 战役（非洲 4、蛮王 4、失落 7）
+- HD 界面背景与战役插画
 
-What comes next, and the known issues, are on the
-[Roadmap](https://zaydme.github.io/openaok/development/roadmap).
+---
 
-## How it works
+## 构建
 
-A deterministic simulation on 32.32 fixed point at a fixed 60 Hz, so the same
-orders give the same world on every machine, read by a renderer that draws the
-original's sprites straight from its archives. The documentation explains it
-all, from the CD's file formats to the computer players:
+### Android
 
-- [How the engine is put together](https://zaydme.github.io/openaok/engine/)
-- [The game's data](https://zaydme.github.io/openaok/engine/data) and [random maps](https://zaydme.github.io/openaok/engine/random-maps)
-- [Fixed point and determinism](https://zaydme.github.io/openaok/engine/determinism) and [lockstep multiplayer](https://zaydme.github.io/openaok/engine/multiplayer)
-- The game: [units](https://zaydme.github.io/openaok/engine/units), [movement](https://zaydme.github.io/openaok/engine/pathfinding), [the economy](https://zaydme.github.io/openaok/engine/economy), [buildings](https://zaydme.github.io/openaok/engine/construction), [training and research](https://zaydme.github.io/openaok/engine/production), [combat](https://zaydme.github.io/openaok/engine/combat), [armies and the navy](https://zaydme.github.io/openaok/engine/war), [victory](https://zaydme.github.io/openaok/engine/victory), [scenarios](https://zaydme.github.io/openaok/engine/scenarios), [computer players](https://zaydme.github.io/openaok/engine/ai)
-- [Rendering](https://zaydme.github.io/openaok/engine/rendering/), [the interface](https://zaydme.github.io/openaok/engine/interface) and [sound](https://zaydme.github.io/openaok/engine/audio)
+需要：
 
-## Getting started
+- Android SDK + NDK（arm64）
+- CMake / Ninja
+- 项目自带的 `android/` Gradle 工程
 
-OpenAoK needs **your own, legally obtained copy** of *Age of Empires II: The
-Age of Kings* (1999, the original CD), not The Conquerors or the HD and
-Definitive editions. [Your game files](https://zaydme.github.io/openaok/guide/game-files)
-explains what to copy. The downloads hold none of the game's data; the data is
-prepared from your CD.
+```sh
+cd android
+./gradlew assembleDebug
+```
 
-| Platform | | |
-|---|---|---|
-| **Windows** 10 and 11, 64-bit | A folder to unzip; the data is prepared on first start | [Guide](https://zaydme.github.io/openaok/guide/windows) |
-| **macOS and Linux** | Built from source in one step | [Guide](https://zaydme.github.io/openaok/guide/desktop) |
-| **Android** 10 or later, arm64 | An APK, with a data folder made on a computer | [Guide](https://zaydme.github.io/openaok/guide/android) |
-| **iPhone and iPad**, iOS 15 or later | An IPA to sideload, or built with Xcode | [Guide](https://zaydme.github.io/openaok/guide/ios) |
-| **Nintendo Switch**, homebrew | An `.nro` and a data folder on the SD card | [Guide](https://zaydme.github.io/openaok/guide/switch) |
+APK 输出在 `android/app/build/outputs/apk/debug/`。
 
-Downloads are on the [releases](https://github.com/Zaydme/openaok/releases)
-page. Help with problems is in
-[Troubleshooting](https://zaydme.github.io/openaok/guide/troubleshooting).
+> 发布版请使用自己的签名；不要提交 `local.properties`、`*.jks`、`build/`。
 
-## Building and contributing
+### Desktop
 
-[Building from source](https://zaydme.github.io/openaok/development/) covers
-every platform's build. Every change is checked by a headless self-check, a
-bit-exact determinism hash and over a hundred scenarios
-([Self-checks](https://zaydme.github.io/openaok/development/verification)), and
-[Contributing](https://zaydme.github.io/openaok/development/contributing) says
-how to work on the project.
+```sh
+./build.sh
+cd build && ./OpenAoK
+```
 
-## AI-assisted development
+桌面构建主要用于调试引擎逻辑；Android 触控面板只在 Android 构建启用。
 
-I didn't build this alone, and it would be a lie to say so. I worked on OpenAoK
-with Claude, and it wrote a big share of the code, the tools and these
-docs. My part was knowing what the game should feel like: deciding what to
-build next, and how to build it, and let Claude do what it does best.
-[CLAUDE.md](CLAUDE.md) is the guide it works from, if you'd like to work on the
-project the same way.
+---
 
-## License and credits
+## 源码结构
 
-OpenAoK is released under the [MIT license](LICENSE). The Indeo 5 movie
-decoder follows FFmpeg's and is under the LGPL 2.1 or later, and the vendored
-libraries keep their own licenses: see
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+```text
+src/
+  ai/            电脑玩家
+  core/          游戏规则、地图、输入
+  ecs/           单位、建筑、战斗、触发器
+  hal/           SDL、窗口、SLP、音频、网络
+  rendering/     地图/单位/UI/文字
+  screens/       主菜单、战役、设置、对话框
+  scenario/      场景与战役读写
+  save/          存档
+tools/data/      HD 数据转换、SLP/DRS/战役转换
+android/         Android 工程与数据打包
+third_party/     SDL2、genieutils、FreeType 等
+```
 
-Thanks to the [openage](https://openage.dev) project for its documentation of
-the game's file formats and mechanics, and to
-[genieutils](https://github.com/sandsmark/genieutils) for reading the dat.
+关键 HD 转换脚本：
 
-## Disclaimer
+- `tools/data/convert_hd.py`：HD 数据布局转换
+- `tools/data/extract_interface_data.py`：界面/战役资源索引
+- `tools/data/convert_dlc_campaigns.py`：HD DLC 战役转换
+- `tools/data/slp.py`：8 位 SLP 读写
+- `tools/data/encode_rect_slp.py`：RGB 图转 8 位 SLP
+- `tools/data/slp32.cpp`：32 位 HD SLP 解码为 PPM
 
-OpenAoK is a free, non-commercial fan project. It is not affiliated with,
-endorsed by or sponsored by Microsoft or Nintendo, and it contains no game
-assets: you need your own copy of the game to play.
+---
 
-*Age of Empires II: The Age of Kings* © Microsoft Corporation. *Age of Empires*
-is a trademark of Microsoft Corporation. Nintendo Switch is a trademark of
-Nintendo. The screenshots in this README were
-created under Microsoft's
-[Game Content Usage Rules](https://www.xbox.com/en-US/developers/rules) using
-assets from *Age of Empires II: The Age of Kings*, and they are not endorsed by
-or affiliated with Microsoft.
+## 已知限制
+
+- **DLC 战役 AI info 仍未转换**：触发器/地图/单位正常，电脑 AI 可能偏安静。
+- **HD 界面布局仍是 800×600 逻辑坐标**：HD 背景 1366×768 会缩放到 800×600，按钮位置与 HD 图并非逐像素对齐。
+- **失落帝国**没有官方静态模块背景/图标，当前使用 fallback 图。
+- **战役开场**是分页文本 + 插画，尚未接入官方 `.mm` 多段旁白/音频。
+- HD 单位/建筑素材仍是 2013 HD 的 8 位 SLP；不是决定版（DE）的 32 位单位。
+- 数据包约 1 GB，首次导入较慢。
+
+---
+
+## 许可与致谢
+
+- 引擎基于 [OpenAoK](https://github.com/Zaydme/openaok)（C++20 / SDL2）
+- Thor 双屏/触控改造基于 **Thor AoK**
+- 32 位 SLP 解码使用 [genieutils](https://github.com/Tapsa/genieutils)
+- SLP/DRS 格式参考 [openage](https://github.com/SFTtech/openage)
+- 《帝国时代 II》版权归 Microsoft / Forgotten Empires 所有
+
+代码许可证见 `LICENSE`；第三方组件见 `THIRD_PARTY_NOTICES.md`。
