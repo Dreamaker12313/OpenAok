@@ -1,4 +1,4 @@
-**English** | [简体中文](README.zh-CN.md)
+**[简体中文](README.zh-CN.md)** | [English](README.md)
 
 # OpenAokHD
 
@@ -20,6 +20,8 @@ It supports 31 civilizations, the original, The Conquerors and the HD expansions
 - Campaign entries for **The Age of Kings / The Conquerors / African Kingdoms / Rise of the Rajas / The Forgotten**
 - HD DLC campaigns converted from `.cpx2` / `.aoe2campaign` into the engine's `.cpx`
 - The Conquerors and HD random maps, plus real-world maps
+- The 18 loose official HD random-map scripts (`Green Arabia`, the `es_*` set) are loaded from the data pack
+- The Conquerors / HD expansion AI files (`gamedata_x1`, `gamedata_x2`) are included in the data pack
 - Chinese UI, unit, technology and civilization names
 - Chinese line breaking by character, white text with an eight-direction black outline
 
@@ -29,7 +31,15 @@ It supports 31 civilizations, the original, The Conquerors and the HD expansions
 - HD backgrounds for the main menu, campaign book, campaign maps and custom campaign pages
 - HD backgrounds are drawn as a separate layer while the original button/sign frames are kept, so replacing art does not break buttons
 - Campaign maps use each DLC's own `*_campaign_render.jpg` / `maps/*.jpg`
-- *The Forgotten* has no official static module art; the official `custom-campaign-fallback` image is used instead
+- *The Forgotten* uses its official campaign-map art: 7 campaign pages with map backgrounds, 3D markers, hover descriptions and real `.cpx` mission text
+
+### HD in-game interface
+
+- A native **1280×720** interface layout for 16:9 frames (1688×768 on the Thor), instead of stretching the 800×600 layout
+- DE-style split bottom bar: building/command panel + unit panel on the left, a separate minimap block on the right
+- The minimap borrows each civilisation's own bottom-panel material and has an independent wooden frame
+- Centred age label, re-aligned resource bar and top-right buttons
+- Pause menu keeps the game visible behind it (no full-screen black panel)
 
 ### Android / touch
 
@@ -132,11 +142,11 @@ HD conversion tools:
 
 ## Known limitations
 
-- **DLC campaign AI info is not converted yet**: triggers, maps and units work, but the computer player may be passive.
-- **HD layout still uses 800×600 logical coordinates**: 1366×768 HD backgrounds are scaled to 800×600, so buttons are not pixel-aligned to the HD art.
-- ***The Forgotten*** has no official static module background/icons; the fallback image is used.
-- **Campaign intros** are paged text + illustrations; the official multi-part `.mm` narration/audio is not wired up yet.
-- HD units/buildings are still the 2013 HD 8-bit SLPs, not the 32-bit Definitive Edition assets.
+- **Base / Conquerors campaign intros**: the `.MM` slideshow is still handled through the mission page + manual replay; full automatic `.MM` playback is not finished.
+- **Forgotten / DLC voice-over**: Chinese narration exists for the base game and The Conquerors; the HD expansions do not have a complete Chinese dub.
+- **Official random-map scripts**: the 18 loose `.rms` files are listed and loaded, but not every HD script keyword is guaranteed to be supported by the parser.
+- **HD unit art** is still the 2013 HD 8-bit SLP; the Definitive Edition 32-bit unit assets are not decoded.
+- The Forgotten campaign pages use official HD screenshots cropped into the data pack because the 2013 HD build has no separate static module art.
 - The data pack is about 1 GB, so the first import is slow.
 
 ---
